@@ -1,0 +1,50 @@
+## config.yaml
+training:
+  epochs: 400000
+  evaluation_frequency: 1000
+  optimizer: "Adam"
+  dqn:
+    initial_learning_rate: 1e-4
+    decay_factor: 0.96
+    decay_interval: 6000  # in epochs
+    batch_size: 32  # not explicitly provided in paper; using default value
+  ppo:
+    learning_rate: 3e-4  # default value (not specified in paper)
+    clip_epsilon: 0.2
+    batch_size: 64  # not explicitly provided in paper; using default value
+    epochs_per_update: 3
+environment:
+  working_hours: "10h"  # from 8am to 6pm
+  vehicle_speed: 30  # km/h
+  drone_speed: 40  # km/h
+  vehicle_loading_time: 5  # minutes
+  drone_loading_time: 5  # minutes
+  drop_off_time: 5  # minutes
+  drone_charging_time: 20  # minutes
+  grid_block_time: 5  # minutes per block (Manhattan grid for vehicle)
+  route_distance_scale: 1.5  # multiplier for road network distance conversion
+  request_deadline: 240  # minutes after arrival
+  request_arrival:
+    start_time: 0    # represents 8am as t=0
+    end_time: 420    # represents last arrival at 3pm (in minutes)
+  request_rate:
+    homogeneous: 1.2
+    homogeneous_low: 0.5
+fleet:
+  vehicles: 2
+  drones: 3
+data:
+  instance_types:
+    - temporal: "Homo"
+      spatial: "Normal"
+    - temporal: "Heter"
+      spatial: "Normal"
+    - temporal: "Homo"
+      spatial: "Power-L"
+    - temporal: "Heter"
+      spatial: "Power-L"
+evaluation:
+  metrics:
+    - served_number
+    - service_rate
+  test_instances_per_type: 100
